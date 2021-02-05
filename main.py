@@ -26,15 +26,10 @@ sites= {
         'check':'<div class="product-inventory"><strong><i class="fas fa-exclamation-triangle"></i> OUT OF STOCK.</strong></div>',
         'search': 'product-inventory' 
         },
-    'target':{
-        'url': 'https://www.target.com/p/xbox-series-x-console/-/A-80790841?clkid=bd16defeN66f711ebb06342010a246e3d&lnm=81938&',
-        'check':'<div class="prod-blitz-copy-message">This item is <b>out of stock</b>.</div>',
-        'search': 'prod-blitz-copy-message' 
-        },
     'walmartAccess':{
         'url': 'https://www.walmart.com/cp/xbox-all-access/8571041',
-        'check':'<div class="prod-blitz-copy-message">This item is <b>out of stock</b>.</div>',
-        'search': 'prod-blitz-copy-message' 
+        'check':'''<div class="cta btn-text-static" style="border-color: rgb(127, 127, 127); border-radius: 4px; background-color: rgb(127, 127, 127); border-width: 2px; color: rgb(255, 255, 255);">Coming Soon</div>''',
+        'search': 'cta btn-text-static'
         },
     'gamestopAccess':{
         'url': 'https://www.gamestop.com/video-games/xbox-series-x/consoles/products/xbox-series-x-xbox-all-access/B224744A.html',
@@ -50,13 +45,11 @@ sites= {
 
 
 
-# for key in sites.keys():
-#     walmart= requests.get(sites[key]['url'], headers=headers)
+for key in sites.keys():
+    walmart= requests.get(sites[key]['url'], headers=headers)
+    soupyness = soup(walmart.content, 'html.parser')
+    check = str(soupyness.find('div', attrs={'class':sites[key]['search']}))
+    print(check == sites[key]['check'])
 
+#https://www.tomsguide.com/news/where-to-buy-xbox-series-x-stock
 
-#     print(walmart)
-walmart= requests.get(sites['target']['url'], headers=headers)
-soupyness = soup(walmart.content, 'html.parser')
-check = str(soupyness.find('div', attrs={'class':'tyles__BaseWrapper-sc-11r1it6-0 styles__SoldOutWrapper-hphbrb-0 fIHckm gKslGC'}))
-
-print(check)
